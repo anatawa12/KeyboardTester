@@ -15,8 +15,8 @@ public class Keyboard : UdonSharpBehaviour
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
 
-    private const float ActiveMinSqrt = 0.25f * 0.25f;
-    private const float IgnoreMaxSqrt = 0.50f * 0.50f;
+    private const float ActiveMinSqrt = 0.10f * 0.10f;
+    private const float IgnoreMaxSqrt = 0.15f * 0.15f;
 
     private int _activeTable = 1;
     private string _log;
@@ -30,14 +30,14 @@ public class Keyboard : UdonSharpBehaviour
     {
         _keyboardTables = MakeTables(str:
             // table 0 is reserved for signs
-            "(" + "[" + "{" + "<" + "\\ " + "; " + "-" + "=" +
+            "(" + "[" + "{" + "<" + "\\" + ";" + "-" + "=" +
             ")" + "]" + "}" + ">" + "/" + ":" + "+" + "_" +
             "“" + "." + "?" + "1" + "2" + "3" + "4" + "5" +
             "‘" + "," + "!" + "6" + "7" + "8" + "9" + "0" +
             "&" + "*" + "¥" + "^" + "%" + "\0" + "\0" + "\0" +
             "~" + "`" + "@" + "$" + "\0" + "\0" + "\0" + "\0" +
             "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0" +
-            "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0 +" +
+            "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0" +
 
             // table 1: Japanese.
             // \u0001: small hiragana like ぁ
@@ -80,8 +80,8 @@ public class Keyboard : UdonSharpBehaviour
     private void Update()
     {
         Debug.Log("Update");
-        Text.text = $"left: ${_leftInput}(${(_leftPressing ? "pressing" : "free")})\n" +
-                    $"right: ${_rightInput}(${(_rightPressing ? "pressing" : "free")})\n" +
+        Text.text = $"left: {_leftInput}({(_leftPressing ? "pressing" : "free")})\n" +
+                    $"right: {_rightInput}({(_rightPressing ? "pressing" : "free")})\n" +
                     _log;
     }
 
@@ -89,7 +89,7 @@ public class Keyboard : UdonSharpBehaviour
     {
         if (str.Length % 64 != 0)
         {
-            Debug.Log("invalid table");
+            Debug.Log($"invalid table size: {str.Length}");
 
             // die
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
@@ -97,7 +97,8 @@ public class Keyboard : UdonSharpBehaviour
             ((string)null).Trim();
         }
 
-        var tableCnt = str.Length / 8 * 8;
+        char[] chars = str.ToCharArray();
+        var tableCnt = str.Length / (8 * 8);
         var tables = new char[tableCnt][][];
 
         for (var i = 0; i < tableCnt; i++)
@@ -108,7 +109,10 @@ public class Keyboard : UdonSharpBehaviour
                 var row = table[j] = new char[8];
 
                 for (var k = 0; k < 8; k++)
-                    row[k] = str[i * 64 + j * 8 + k];
+                {
+                    Debug.Log($"access: {i * 64 + j * 8 + k}");
+                    row[k] = chars[i * 64 + j * 8 + k];
+                }
             }
         }
 
@@ -117,7 +121,7 @@ public class Keyboard : UdonSharpBehaviour
 
     private void PressChanged(bool left)
     {
-        Log($"press changed: ${(left ? "left" : "right")}");
+        Log($"press changed: {(left ? "left" : "right")}");
         // impossible due to C# version
         //switch ((left, _leftPressing, _rightPressing))
         //{
@@ -167,7 +171,7 @@ public class Keyboard : UdonSharpBehaviour
 
     public override void InputMoveVertical(float value, UdonInputEventArgs args)
     {
-        _leftInput.x = value;
+        _leftInput.y = value;
         UpdateLeft();
     }
 
@@ -179,7 +183,7 @@ public class Keyboard : UdonSharpBehaviour
 
     public override void InputLookVertical(float value, UdonInputEventArgs args)
     {
-        _rightInput.x = value;
+        _rightInput.y = value;
         UpdateRight();
     }
 }
