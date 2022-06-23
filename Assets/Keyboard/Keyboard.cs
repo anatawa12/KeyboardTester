@@ -17,8 +17,8 @@ public class Keyboard : UdonSharpBehaviour
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
 
-    private const float ActiveMinSqrt = 0.10f * 0.10f;
-    private const float IgnoreMaxSqrt = 0.15f * 0.15f;
+    private const float ActiveMinSqrt = 0.25f * 0.25f;
+    private const float IgnoreMaxSqrt = 0.50f * 0.50f;
     // tan(90/4*1 = 22.5[deg])
     private const float Tan1QuoterRightAngle = 0.41421356237f;
     // tan(90/4*3 = 67.5[deg]) = 1/tan(90/4*1 = 22.5[deg])
@@ -29,7 +29,9 @@ public class Keyboard : UdonSharpBehaviour
     private string _log;
 
     private bool _leftPressing = false;
+    private int _leftAngle = -1;
     private bool _rightPressing = false;
+    private int _rightAngle = -1;
 
     private void Start()
     {
@@ -92,22 +94,23 @@ public class Keyboard : UdonSharpBehaviour
         var pressingBoth = _leftPressing && _rightPressing;
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
-        var leftAngle = StickAngle(leftInput);
-        var rightAngle = StickAngle(rightInput);
         if (pressingBoth && (!_leftPressing || !_rightPressing))
         {
-            InputChar(leftAngle, rightAngle);
+            InputChar(_leftAngle, _rightAngle);
         }
 
+        _leftAngle = StickAngle(leftInput);
+        _rightAngle = StickAngle(rightInput);
         logText.text =
-            $"left: {leftInput.ToString("F4")}\nleft angle: {leftAngle} {(_leftPressing ? "pressing" : "free")}\n" +
-            $"right: {rightInput.ToString("F4")}\nright angle: {rightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
+            $"left: {leftInput.ToString("F4")}\nleft angle: {_leftAngle} {(_leftPressing ? "pressing" : "free")}\n" +
+            $"right: {rightInput.ToString("F4")}\nright angle: {_rightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
             $"table: {_activeTable}\n" +
             _log;
     }
 
     private void InputChar(int leftAngle, int rightAngle)
     {
+        Log($"input char with {leftAngle} {rightAngle}");
         if (leftAngle < 0) return;
         if (rightAngle < 0) return;
         // 6,6~7,7 is reserved
