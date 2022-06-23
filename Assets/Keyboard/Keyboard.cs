@@ -22,9 +22,7 @@ public class Keyboard : UdonSharpBehaviour
     private string _log;
 
     private bool _leftPressing = false;
-    private Vector2 _leftInput = Vector2.zero;
     private bool _rightPressing = false;
-    private Vector2 _rightInput = Vector2.zero;
 
     private void Start()
     {
@@ -79,9 +77,14 @@ public class Keyboard : UdonSharpBehaviour
 
     private void Update()
     {
-        Debug.Log("Update");
-        Text.text = $"left: {_leftInput}({(_leftPressing ? "pressing" : "free")})\n" +
-                    $"right: {_rightInput}({(_rightPressing ? "pressing" : "free")})\n" +
+        var leftInput = new Vector2(Input.GetAxisRaw("Oculus_CrossPlatform_PrimaryThumbstickHorizontal"),
+            Input.GetAxisRaw("Oculus_CrossPlatform_PrimaryThumbstickVertical"));
+        var rightInput = new Vector2(Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickHorizontal"),
+            Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickVertical"));
+        UpdateHand(leftInput, ref _leftPressing);
+        UpdateHand(rightInput, ref _rightPressing);
+        Text.text = $"left: {leftInput}({(_leftPressing ? "pressing" : "free")})\n" +
+                    $"right: {rightInput}({(_rightPressing ? "pressing" : "free")})\n" +
                     _log;
     }
 
@@ -130,7 +133,7 @@ public class Keyboard : UdonSharpBehaviour
         //}
     }
 
-    private bool UpdateHand(ref Vector2 location, ref bool pressing)
+    private bool UpdateHand(Vector2 location, ref bool pressing)
     {
         switch (pressing)
         {
@@ -150,40 +153,5 @@ public class Keyboard : UdonSharpBehaviour
                 break;
         }
         return false;
-    }
-
-    private void UpdateLeft() {
-        Log($"update hand: left");
-        if (UpdateHand(ref _leftInput, ref _leftPressing))
-            PressChanged(true);
-    }
-    private void UpdateRight() {
-        Log($"update hand: right");
-        if (UpdateHand(ref _rightInput, ref _rightPressing))
-            PressChanged(false);
-    }
-
-    public override void InputMoveHorizontal(float value, UdonInputEventArgs args)
-    {
-        _leftInput.x = value;
-        UpdateLeft();
-    }
-
-    public override void InputMoveVertical(float value, UdonInputEventArgs args)
-    {
-        _leftInput.y = value;
-        UpdateLeft();
-    }
-
-    public override void InputLookHorizontal(float value, UdonInputEventArgs args)
-    {
-        _rightInput.x = value;
-        UpdateRight();
-    }
-
-    public override void InputLookVertical(float value, UdonInputEventArgs args)
-    {
-        _rightInput.y = value;
-        UpdateRight();
     }
 }
