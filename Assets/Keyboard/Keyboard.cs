@@ -10,7 +10,7 @@ using VRC.Udon.Common;
 
 public class Keyboard : UdonSharpBehaviour
 {
-    public TextMeshPro Text;
+    public TextMeshPro logText;
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
@@ -87,7 +87,7 @@ public class Keyboard : UdonSharpBehaviour
             Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickVertical"));
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
-        Text.text = $"left: {leftInput.ToString("F4")}(targeting {StickAngle(leftInput)})({(_leftPressing ? "pressing" : "free")})\n" +
+        logText.text = $"left: {leftInput.ToString("F4")}(targeting {StickAngle(leftInput)})({(_leftPressing ? "pressing" : "free")})\n" +
                     $"right: {rightInput.ToString("F4")}(targeting {StickAngle(rightInput)})({(_rightPressing ? "pressing" : "free")})\n" +
                     _log;
     }
