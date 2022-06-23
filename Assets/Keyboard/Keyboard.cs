@@ -12,6 +12,7 @@ using VRC.Udon.Common;
 public class Keyboard : UdonSharpBehaviour
 {
     public TextMeshPro logText;
+    public TextMeshPro mainText;
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
@@ -24,6 +25,7 @@ public class Keyboard : UdonSharpBehaviour
     private const float Tan3QuoterRightAngle = 22.5881805325f;
 
     private int _activeTable = 1;
+    private int _activeTableOld = 0;
     private string _log;
 
     private bool _leftPressing = false;
@@ -31,6 +33,7 @@ public class Keyboard : UdonSharpBehaviour
 
     private void Start()
     {
+        mainText.text = "";
         _keyboardTables = MakeTables(str:
             // table 0 is reserved for signs
             "(" + "[" + "{" + "<" + "\\" + ";" + "-" + "=" +
@@ -86,11 +89,82 @@ public class Keyboard : UdonSharpBehaviour
             Input.GetAxisRaw("Oculus_CrossPlatform_PrimaryThumbstickVertical"));
         var rightInput = new Vector2(Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickHorizontal"),
             Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickVertical"));
+        var pressingBoth = _leftPressing && _rightPressing;
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
-        logText.text = $"left: {leftInput.ToString("F4")}\nleft angle: {StickAngle(leftInput)} {(_leftPressing ? "pressing" : "free")}\n" +
-                    $"right: {rightInput.ToString("F4")}\nright angle: {StickAngle(rightInput)} {(_rightPressing ? "pressing" : "free")}\n" +
-                    _log;
+        var leftAngle = StickAngle(leftInput);
+        var rightAngle = StickAngle(rightInput);
+        if (pressingBoth && (!_leftPressing || !_rightPressing))
+        {
+            InputChar(leftAngle, rightAngle);
+        }
+
+        logText.text =
+            $"left: {leftInput.ToString("F4")}\nleft angle: {leftAngle} {(_leftPressing ? "pressing" : "free")}\n" +
+            $"right: {rightInput.ToString("F4")}\nright angle: {rightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
+            $"table: {_activeTable}\n" +
+            _log;
+    }
+
+    private void InputChar(int leftAngle, int rightAngle)
+    {
+        if (leftAngle < 0) return;
+        if (rightAngle < 0) return;
+        // 6,6~7,7 is reserved
+        switch (leftAngle)
+        {
+            case 6:
+                switch (rightAngle)
+                {
+                    case 6:
+                        mainText.text = mainText.text.Substring(mainText.text.Length - 1);
+                        return;
+                    case 7:
+                        mainText.text += ' ';
+                        return;
+                }
+                break;
+            case 7:
+                switch (rightAngle)
+                {
+                    case 6:
+                        if (_activeTableOld == 0)
+                        {
+                            _activeTableOld = _activeTable;
+                            _activeTable = 0;
+                        }
+                        else
+                        {
+                            _activeTable = _activeTableOld;
+                            _activeTableOld = 0;
+                        }
+                        return;
+                    case 7:
+                        if (_activeTableOld != 0)
+                        {
+                            _activeTable = _activeTableOld;
+                            _activeTableOld = 0;
+                        }
+
+                        _activeTable++;
+                        if (_activeTable == _keyboardTables.Length)
+                            _activeTable = 1;
+                        return;
+                }
+                break;
+        }
+
+        var c = _keyboardTables[_activeTable][leftAngle][rightAngle];
+        if (c == 0)
+            return;
+        if (c < ' ')
+        {
+            // TODO: implement extra operations
+            Log($"unimplemented operator char: {(int)c:x2}");
+            return;
+        }
+
+        mainText.text += c;
     }
 
     private char[][][] MakeTables(string str)

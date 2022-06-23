@@ -469,6 +469,7 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 1616326688}
   logText: {fileID: 836390500}
+  mainText: {fileID: 1987421383}
 --- !u!4 &1616326690
 Transform:
   m_ObjectHideFlags: 0
