@@ -17,6 +17,10 @@ public class Keyboard : UdonSharpBehaviour
 
     private const float ActiveMinSqrt = 0.10f * 0.10f;
     private const float IgnoreMaxSqrt = 0.15f * 0.15f;
+    // tan(90/4*1 = 22.5[deg])
+    private const float Tan1QuoterRightAngle = 0.41421356237f;
+    // tan(90/4*3 = 67.5[deg]) = 1/tan(90/4*1 = 22.5[deg])
+    private const float Tan3QuoterRightAngle = 22.5881805325f;
 
     private int _activeTable = 1;
     private string _log;
@@ -83,8 +87,8 @@ public class Keyboard : UdonSharpBehaviour
             Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickVertical"));
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
-        Text.text = $"left: {leftInput}({(_leftPressing ? "pressing" : "free")})\n" +
-                    $"right: {rightInput}({(_rightPressing ? "pressing" : "free")})\n" +
+        Text.text = $"left: {leftInput.ToString("F4")}(targeting {StickAngle(leftInput)})({(_leftPressing ? "pressing" : "free")})\n" +
+                    $"right: {rightInput.ToString("F4")}(targeting {StickAngle(rightInput)})({(_rightPressing ? "pressing" : "free")})\n" +
                     _log;
     }
 
@@ -153,5 +157,37 @@ public class Keyboard : UdonSharpBehaviour
                 break;
         }
         return false;
+    }
+
+    /*    \       /
+     * _7  \  0  /  1_
+     *  \_  \   /  _/
+     *  6_|-------|_2
+     * _/   /   \   \_
+     *  5  /  4  \  3
+     *    /       \
+     */
+    private int StickAngle(Vector2 stick)
+    {
+        if (stick.x == 0 && stick.y == 0)
+            return -1;
+        var xAbs = Mathf.Abs(stick.x);
+        var yAbs = Mathf.Abs(stick.y);
+        var absRadio = xAbs / yAbs;
+        if (absRadio < Tan1QuoterRightAngle)
+        {
+            return stick.y > 0 ? 0 : 4;
+        }
+        else if (absRadio < Tan3QuoterRightAngle)
+        {
+            if (stick.x > 0)
+                return stick.y > 0 ? 1 : 3;
+            else
+                return stick.y > 0 ? 7 : 5;
+        }
+        else
+        {
+            return stick.x > 0 ? 2 : 6;
+        }
     }
 }
