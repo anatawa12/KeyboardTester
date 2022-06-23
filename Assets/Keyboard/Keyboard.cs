@@ -87,8 +87,8 @@ public class Keyboard : UdonSharpBehaviour
             Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickVertical"));
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
-        logText.text = $"left: {leftInput.ToString("F4")}(targeting {StickAngle(leftInput)})({(_leftPressing ? "pressing" : "free")})\n" +
-                    $"right: {rightInput.ToString("F4")}(targeting {StickAngle(rightInput)})({(_rightPressing ? "pressing" : "free")})\n" +
+        logText.text = $"left: {leftInput.ToString("F4")}\nleft angle: {StickAngle(leftInput)} {(_leftPressing ? "pressing" : "free")}\n" +
+                    $"right: {rightInput.ToString("F4")}\nright angle: {StickAngle(rightInput)} {(_rightPressing ? "pressing" : "free")}\n" +
                     _log;
     }
 
