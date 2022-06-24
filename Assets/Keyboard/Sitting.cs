@@ -6,9 +6,26 @@ using VRC.Udon;
 
 public class Sitting : UdonSharpBehaviour
 {
-    private bool seated = false;
+    private bool _seatedLocal = false;
+    public VRCStation station;
+
     public override void Interact()
     {
-        Networking.LocalPlayer.UseAttachedStation();
+        if (_seatedLocal)
+            station.ExitStation(Networking.LocalPlayer);
+        else
+            station.UseStation(Networking.LocalPlayer);
+    }
+
+    public override void OnStationEntered(VRCPlayerApi player)
+    {
+        if (player == Networking.LocalPlayer)
+            _seatedLocal = true;
+    }
+
+    public override void OnStationExited(VRCPlayerApi player)
+    {
+        if (player == Networking.LocalPlayer)
+            _seatedLocal = false;
     }
 }
