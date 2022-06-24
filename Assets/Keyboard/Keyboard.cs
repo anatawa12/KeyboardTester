@@ -120,7 +120,7 @@ public class Keyboard : UdonSharpBehaviour
                 switch (rightAngle)
                 {
                     case 6:
-                        mainText.text = mainText.text.Substring(mainText.text.Length - 1);
+                        mainText.text = mainText.text.Substring(0, mainText.text.Length - 1);
                         return;
                     case 7:
                         mainText.text += ' ';
