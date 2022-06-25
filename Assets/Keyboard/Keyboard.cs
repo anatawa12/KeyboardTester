@@ -14,6 +14,7 @@ public class Keyboard : UdonSharpBehaviour
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
+    private TextMeshPro[][] _charTMPs;
 
     private const float ActiveMinSqrt = 0.25f * 0.25f;
     private const float IgnoreMaxSqrt = 0.50f * 0.50f;
@@ -77,6 +78,10 @@ public class Keyboard : UdonSharpBehaviour
 
             "");
         TableChanged(_activeTable);
+
+        for (var i = 0; i < 8; i++)
+            for (var j = 0; j < 8; j++)
+                _charTMPs[i][j] = (TextMeshPro)tableRoot.transform.GetChild(i * 8 + j).gameObject.GetComponent(typeof(TextMeshPro));
     }
 
     private void Log(string log)
@@ -197,13 +202,12 @@ public class Keyboard : UdonSharpBehaviour
     private void TableChanged(int activeTable)
     {
         for (var i = 0; i < 8; i++)
-        {
             for (var j = 0; j < 8; j++)
-            {
-                var tmp = (TextMeshPro)tableRoot.transform.GetChild(i * 8 + j).gameObject.GetComponent(typeof(TextMeshPro));
-                tmp.text = _keyboardTables[activeTable][i][j].ToString();
-            }
-        }
+                _charTMPs[i][j].text = _keyboardTables[activeTable][i][j].ToString();
+        _charTMPs[6][6].text = "bs";
+        _charTMPs[6][7].text = "sp";
+        _charTMPs[7][6].text = "#!";
+        _charTMPs[7][7].text = "🌏";
     }
 
     private char[][][] MakeTables(string str)
