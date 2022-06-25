@@ -16,8 +16,8 @@ public class Keyboard : UdonSharpBehaviour
     private char[][][] _keyboardTables;
     private TextMeshPro[][] _charTMPs;
 
-    private const float ActiveMinSqrt = 0.25f * 0.25f;
-    private const float IgnoreMaxSqrt = 0.50f * 0.50f;
+    private const float ActiveMinSqrt = 0.50f * 0.50f;
+    private const float IgnoreMaxSqrt = 0.75f * 0.75f;
     // tan(90/4*1 = 22.5[deg])
     private const float Tan1QuoterRightAngle = 0.41421356237f;
     // tan(90/4*3 = 67.5[deg]) = 1/tan(90/4*1 = 22.5[deg])
