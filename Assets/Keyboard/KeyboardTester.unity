@@ -1192,9 +1192,9 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 910938182}
-  globalArea: {fileID: 0}
-  sourceArea: {fileID: 0}
-  headerLine: {fileID: 0}
+  globalArea: {fileID: 1987421383}
+  sourceArea: {fileID: 325746783}
+  headerLine: {fileID: 203854374}
   text: 
 --- !u!1 &984768559
 GameObject:
