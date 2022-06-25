@@ -13,6 +13,10 @@ public class Keyboard : UdonSharpBehaviour
 {
     public TextMeshPro logText;
     public TextMeshPro mainText;
+    public GameObject rowCursor;
+    public GameObject colCursor;
+    public GameObject tableRoot;
+
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
@@ -78,6 +82,7 @@ public class Keyboard : UdonSharpBehaviour
             "Y" + "Z" + "\'" + "," + "!" + "-" + "\0" + "\0" +
 
             "");
+        TableChanged(_activeTable);
     }
 
     private void Log(string log)
@@ -106,6 +111,26 @@ public class Keyboard : UdonSharpBehaviour
             $"right: {rightInput.ToString("F4")}\nright angle: {_rightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
             $"table: {_activeTable}\n" +
             _log;
+
+        if (_leftAngle == -1)
+        {
+            rowCursor.SetActive(false);
+        }
+        else
+        {
+            rowCursor.SetActive(true);
+            rowCursor.transform.localPosition = new Vector3(0, _leftAngle * -0.1f, 0);
+        }
+
+        if (_rightAngle == -1)
+        {
+            colCursor.SetActive(false);
+        }
+        else
+        {
+            colCursor.SetActive(true);
+            colCursor.transform.localPosition = new Vector3(_rightAngle * 0.1f, 0, 0);
+        }
     }
 
     private void InputChar(int leftAngle, int rightAngle)
@@ -141,6 +166,8 @@ public class Keyboard : UdonSharpBehaviour
                             _activeTable = _activeTableOld;
                             _activeTableOld = 0;
                         }
+                        
+                        TableChanged(_activeTable);
                         return;
                     case 7:
                         if (_activeTableOld != 0)
@@ -152,6 +179,8 @@ public class Keyboard : UdonSharpBehaviour
                         _activeTable++;
                         if (_activeTable == _keyboardTables.Length)
                             _activeTable = 1;
+
+                        TableChanged(_activeTable);
                         return;
                 }
                 break;
@@ -168,6 +197,18 @@ public class Keyboard : UdonSharpBehaviour
         }
 
         mainText.text += c;
+    }
+
+    private void TableChanged(int activeTable)
+    {
+        for (var i = 0; i < 8; i++)
+        {
+            for (var j = 0; j < 8; j++)
+            {
+                var tmp = (TextMeshPro)tableRoot.transform.GetChild(i * 8 + j).gameObject.GetComponent(typeof(TextMeshPro));
+                tmp.text = _keyboardTables[activeTable][i][j].ToString();
+            }
+        }
     }
 
     private char[][][] MakeTables(string str)
