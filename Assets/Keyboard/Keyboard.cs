@@ -1,12 +1,6 @@
-﻿
-using System;
-using System.Linq;
-using TMPro;
+﻿using TMPro;
 using UdonSharp;
 using UnityEngine;
-using VRC.SDKBase;
-using VRC.Udon;
-using VRC.Udon.Common;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
 public class Keyboard : UdonSharpBehaviour
@@ -145,7 +139,8 @@ public class Keyboard : UdonSharpBehaviour
                 switch (rightAngle)
                 {
                     case 6:
-                        mainText.text = mainText.text.Substring(0, mainText.text.Length - 1);
+                        if (mainText.text.Length != 0)
+                            mainText.text = mainText.text.Substring(0, mainText.text.Length - 1);
                         return;
                     case 7:
                         mainText.text += ' ';
