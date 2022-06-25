@@ -11,7 +11,8 @@ public class Selecter : UdonSharpBehaviour
 
     public override void Interact()
     {
-        enable.SetActive(true);
+        if (enable != null)
+            enable.SetActive(true);
         foreach (var disable in disables)
             disable.SetActive(false);
     }
