@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -15185,9 +15185,12 @@ MonoBehaviour:
   useAssignedLayers: 0
   DynamicPrefabs: []
   DynamicMaterials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 2100000, guid: a59b4d20f3b324ca1aae5fd4f3942cf3, type: 2}
+  - {fileID: 2100000, guid: cea6e85870f1248a4b45395b052296ae, type: 2}
+  - {fileID: 2100000, guid: 9e84ecc316f554dd68af7285aa0f69f2, type: 2}
+  - {fileID: 2100000, guid: 207e75bf73b6a4f5ca7961d617baf0a2, type: 2}
   LightMapsNear: []
   LightMapsFar: []
   LightMode: 0
