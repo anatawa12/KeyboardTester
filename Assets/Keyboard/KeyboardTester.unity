@@ -1195,7 +1195,6 @@ MonoBehaviour:
   globalArea: {fileID: 1987421383}
   sourceArea: {fileID: 325746783}
   headerLine: {fileID: 203854374}
-  text: 
 --- !u!1 &984768559
 GameObject:
   m_ObjectHideFlags: 0

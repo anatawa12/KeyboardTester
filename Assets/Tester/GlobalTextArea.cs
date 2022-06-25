@@ -1,4 +1,5 @@
 ﻿
+using System;
 using TMPro;
 using UdonSharp;
 using VRC.SDKBase;
@@ -10,6 +11,7 @@ public class GlobalTextArea : UdonSharpBehaviour
     public TextMeshPro headerLine;
 
     [UdonSynced]
+    [NonSerialized]
     public string text;
 
     private void Update()
