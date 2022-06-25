@@ -4,6 +4,7 @@ using TMPro;
 using UdonSharp;
 using VRC.SDKBase;
 
+[UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class GlobalTextArea : UdonSharpBehaviour
 {
     public TextMeshPro globalArea;
@@ -18,7 +19,11 @@ public class GlobalTextArea : UdonSharpBehaviour
     {
         if (Networking.IsOwner(gameObject))
         {
-            text = sourceArea.text;
+            if (text != sourceArea.text)
+            {
+                text = sourceArea.text;
+                RequestSerialization();
+            }
         }
 
         globalArea.text = text;
