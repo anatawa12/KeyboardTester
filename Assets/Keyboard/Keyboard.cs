@@ -77,11 +77,17 @@ public class Keyboard : UdonSharpBehaviour
             "Y" + "Z" + "\'" + "," + "!" + "-" + "\0" + "\0" +
 
             "");
-        TableChanged(_activeTable);
 
+        _charTMPs = new TextMeshPro[8][];
         for (var i = 0; i < 8; i++)
+        {
+            _charTMPs[i] = new TextMeshPro[8];
             for (var j = 0; j < 8; j++)
-                _charTMPs[i][j] = (TextMeshPro)tableRoot.transform.GetChild(i * 8 + j).gameObject.GetComponent(typeof(TextMeshPro));
+                _charTMPs[i][j] = (TextMeshPro)tableRoot.transform.GetChild(i * 8 + j).gameObject
+                    .GetComponent(typeof(TextMeshPro));
+        }
+        
+        TableChanged(_activeTable);
     }
 
     private void Log(string log)
