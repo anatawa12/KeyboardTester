@@ -7,14 +7,14 @@ public class Keyboard : UdonSharpBehaviour
 {
     public TextMeshPro logText;
     public TextMeshPro mainText;
-    public GameObject rowCursor;
-    public GameObject colCursor;
+    public RectTransform rowCursor;
+    public RectTransform colCursor;
     public GameObject tableRoot;
 
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
-    private TextMeshPro[][] _charTMPs;
+    private TextMeshProUGUI[][] _charTMPs;
 
     private const float ActiveMinSqrt = 0.50f * 0.50f;
     private const float IgnoreMaxSqrt = 0.75f * 0.75f;
@@ -78,13 +78,13 @@ public class Keyboard : UdonSharpBehaviour
 
             "");
 
-        _charTMPs = new TextMeshPro[8][];
+        _charTMPs = new TextMeshProUGUI[8][];
         for (var i = 0; i < 8; i++)
         {
-            _charTMPs[i] = new TextMeshPro[8];
+            _charTMPs[i] = new TextMeshProUGUI[8];
             for (var j = 0; j < 8; j++)
-                _charTMPs[i][j] = (TextMeshPro)tableRoot.transform.GetChild(i * 8 + j).gameObject
-                    .GetComponent(typeof(TextMeshPro));
+                _charTMPs[i][j] = (TextMeshProUGUI)tableRoot.transform.GetChild(i * 8 + j).gameObject
+                    .GetComponent(typeof(TextMeshProUGUI));
         }
         
         TableChanged(_activeTable);
@@ -119,22 +119,22 @@ public class Keyboard : UdonSharpBehaviour
 
         if (_leftAngle == -1)
         {
-            rowCursor.SetActive(false);
+            rowCursor.gameObject.SetActive(false);
         }
         else
         {
-            rowCursor.SetActive(true);
-            rowCursor.transform.localPosition = new Vector3(0, _leftAngle * -0.1f, 0);
+            rowCursor.gameObject.SetActive(true);
+            rowCursor.anchoredPosition = new Vector2(0, -3.5f + _leftAngle);
         }
 
         if (_rightAngle == -1)
         {
-            colCursor.SetActive(false);
+            colCursor.gameObject.SetActive(false);
         }
         else
         {
-            colCursor.SetActive(true);
-            colCursor.transform.localPosition = new Vector3(_rightAngle * 0.1f, 0, 0);
+            colCursor.gameObject.SetActive(true);
+            rowCursor.anchoredPosition = new Vector2(-3.5f + _rightAngle, 0);
         }
     }
 
