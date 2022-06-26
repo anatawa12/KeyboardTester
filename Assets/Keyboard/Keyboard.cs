@@ -213,7 +213,7 @@ public class Keyboard : UdonSharpBehaviour
         _charTMPs[6][6].text = "bs";
         _charTMPs[6][7].text = "sp";
         _charTMPs[7][6].text = "#!";
-        _charTMPs[7][7].text = "🌏";
+        //_charTMPs[7][7].text = "";
     }
 
     private char[][][] MakeTables(string str)
