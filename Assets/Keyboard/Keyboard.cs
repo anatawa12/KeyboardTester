@@ -109,11 +109,13 @@ public class Keyboard : UdonSharpBehaviour
             InputChar(_leftAngle, _rightAngle);
         }
 
-        _leftAngle = StickAngle(leftInput);
-        _rightAngle = StickAngle(rightInput);
+        _leftAngle = _leftPressing ? StickAngle(leftInput) : -1;
+        _rightAngle = _rightPressing ? StickAngle(rightInput) : -1;
         logText.text =
-            $"left: {leftInput.ToString("F4")}\nleft angle: {_leftAngle} {(_leftPressing ? "pressing" : "free")}\n" +
-            $"right: {rightInput.ToString("F4")}\nright angle: {_rightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
+            $"left: {leftInput.ToString("F4")}({leftInput.magnitude:F4})\n" +
+            $"left angle: {_leftAngle} {(_leftPressing ? "pressing" : "free")}\n" +
+            $"right: {rightInput.ToString("F4")}({rightInput.magnitude:F4})\n" +
+            $"right angle: {_rightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
             $"table: {_activeTable}\n" +
             _log;
 
