@@ -124,7 +124,7 @@ public class Keyboard : UdonSharpBehaviour
         else
         {
             rowCursor.gameObject.SetActive(true);
-            rowCursor.anchoredPosition = new Vector2(0, -3.5f + _leftAngle);
+            rowCursor.anchoredPosition = new Vector2(0, 3.5f - _leftAngle);
         }
 
         if (_rightAngle == -1)
@@ -134,7 +134,7 @@ public class Keyboard : UdonSharpBehaviour
         else
         {
             colCursor.gameObject.SetActive(true);
-            rowCursor.anchoredPosition = new Vector2(-3.5f + _rightAngle, 0);
+            colCursor.anchoredPosition = new Vector2(-3.5f + _rightAngle, 0);
         }
     }
 
