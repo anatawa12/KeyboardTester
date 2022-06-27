@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UdonSharp;
 using UnityEngine;
 
@@ -16,6 +17,10 @@ public class Keyboard : UdonSharpBehaviour
     private char[][][] _keyboardTables;
     private TextMeshProUGUI[][] _charTMPs;
 
+    [NonSerialized] public char[][] ActiveTable;
+    [NonSerialized] public int LeftAngle = -1;
+    [NonSerialized] public int RightAngle = -1;
+
     private const float ActiveMinSqrt = 0.75f * 0.75f;
     private const float IgnoreMaxSqrt = 0.80f * 0.80f;
     // tan(90/4*1 = 22.5[deg])
@@ -28,9 +33,7 @@ public class Keyboard : UdonSharpBehaviour
     private string _log;
 
     private bool _leftPressing = false;
-    private int _leftAngle = -1;
     private bool _rightPressing = false;
-    private int _rightAngle = -1;
 
     private void Start()
     {
@@ -75,7 +78,6 @@ public class Keyboard : UdonSharpBehaviour
             "Q" + "R" + "S" + "T" + "U" + "V" + "W" + "X" +
             "y" + "z" + "\"" + "." + "?" + "/" + "\0" + "\0" +
             "Y" + "Z" + "\'" + "," + "!" + "-" + "\0" + "\0" +
-
             "");
 
         _charTMPs = new TextMeshProUGUI[8][];
@@ -86,7 +88,7 @@ public class Keyboard : UdonSharpBehaviour
                 _charTMPs[i][j] = (TextMeshProUGUI)tableRoot.transform.GetChild(i * 8 + j).gameObject
                     .GetComponent(typeof(TextMeshProUGUI));
         }
-        
+
         TableChanged(_activeTable);
     }
 
@@ -106,37 +108,37 @@ public class Keyboard : UdonSharpBehaviour
         UpdateHand(rightInput, ref _rightPressing);
         if (pressingBoth && (!_leftPressing || !_rightPressing))
         {
-            InputChar(_leftAngle, _rightAngle);
+            InputChar(LeftAngle, RightAngle);
         }
 
-        _leftAngle = _leftPressing ? StickAngle(leftInput) : -1;
-        _rightAngle = _rightPressing ? StickAngle(rightInput) : -1;
+        LeftAngle = _leftPressing ? StickAngle(leftInput) : -1;
+        RightAngle = _rightPressing ? StickAngle(rightInput) : -1;
         logText.text =
             $"left: {leftInput.ToString("F4")}({leftInput.magnitude:F4})\n" +
-            $"left angle: {_leftAngle} {(_leftPressing ? "pressing" : "free")}\n" +
+            $"left angle: {LeftAngle} {(_leftPressing ? "pressing" : "free")}\n" +
             $"right: {rightInput.ToString("F4")}({rightInput.magnitude:F4})\n" +
-            $"right angle: {_rightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
+            $"right angle: {RightAngle} {(_rightPressing ? "pressing" : "free")}\n" +
             $"table: {_activeTable}\n" +
             _log;
 
-        if (_leftAngle == -1)
+        if (LeftAngle == -1)
         {
             rowCursor.gameObject.SetActive(false);
         }
         else
         {
             rowCursor.gameObject.SetActive(true);
-            rowCursor.anchoredPosition = new Vector2(0, 3.5f - _leftAngle);
+            rowCursor.anchoredPosition = new Vector2(0, 3.5f - LeftAngle);
         }
 
-        if (_rightAngle == -1)
+        if (RightAngle == -1)
         {
             colCursor.gameObject.SetActive(false);
         }
         else
         {
             colCursor.gameObject.SetActive(true);
-            colCursor.anchoredPosition = new Vector2(-3.5f + _rightAngle, 0);
+            colCursor.anchoredPosition = new Vector2(-3.5f + RightAngle, 0);
         }
     }
 
@@ -159,6 +161,7 @@ public class Keyboard : UdonSharpBehaviour
                         mainText.text += ' ';
                         return;
                 }
+
                 break;
             case 7:
                 switch (rightAngle)
@@ -174,7 +177,7 @@ public class Keyboard : UdonSharpBehaviour
                             _activeTable = _activeTableOld;
                             _activeTableOld = 0;
                         }
-                        
+
                         TableChanged(_activeTable);
                         return;
                     case 7:
@@ -191,10 +194,11 @@ public class Keyboard : UdonSharpBehaviour
                         TableChanged(_activeTable);
                         return;
                 }
+
                 break;
         }
 
-        var c = _keyboardTables[_activeTable][leftAngle][rightAngle];
+        var c = ActiveTable[leftAngle][rightAngle];
         if (c == 0)
             return;
         if (c < ' ')
@@ -209,9 +213,10 @@ public class Keyboard : UdonSharpBehaviour
 
     private void TableChanged(int activeTable)
     {
+        ActiveTable = _keyboardTables[activeTable];
         for (var i = 0; i < 8; i++)
-            for (var j = 0; j < 8; j++)
-                _charTMPs[i][j].text = _keyboardTables[activeTable][i][j].ToString();
+        for (var j = 0; j < 8; j++)
+            _charTMPs[i][j].text = ActiveTable[i][j].ToString();
         _charTMPs[6][6].text = "bs";
         _charTMPs[6][7].text = "sp";
         _charTMPs[7][6].text = "#!";
@@ -273,6 +278,7 @@ public class Keyboard : UdonSharpBehaviour
                     pressing = false;
                     return true;
                 }
+
                 break;
             case false:
                 if (IgnoreMaxSqrt < location.sqrMagnitude)
@@ -280,8 +286,10 @@ public class Keyboard : UdonSharpBehaviour
                     pressing = true;
                     return true;
                 }
+
                 break;
         }
+
         return false;
     }
 
