@@ -217,8 +217,8 @@ public class Keyboard : UdonSharpBehaviour
         for (var i = 0; i < 8; i++)
         for (var j = 0; j < 8; j++)
             _charTMPs[i][j].text = ActiveTable[i][j].ToString();
-        _charTMPs[6][6].text = "bs";
-        _charTMPs[6][7].text = "sp";
+        _charTMPs[6][6].text = "\u232b"; // Erase To the Left: ⌫
+        _charTMPs[6][7].text = "\u2423"; // Open Box: &blank;: ␣
         _charTMPs[7][6].text = "#!";
         //_charTMPs[7][7].text = "";
     }
