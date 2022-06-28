@@ -1,0 +1,23 @@
+#!/usr/bin/env fontforge
+
+Open("Noto_Emoji~/static/NotoEmoji-Regular.ttf")
+SelectAll()
+ScaleToEm(1024)
+Generate(".NotoEmoji-Regular.otf")
+
+Open("Noto_Sans_Symbols_2~/NotoSansSymbols2-Regular.ttf")
+SelectAll()
+ScaleToEm(1024)
+Generate(".NotoSansSymbols2-Regular.otf")
+
+Open("Noto_Sans_JP~/NotoSansJP-Regular.otf")
+SelectAll()
+ScaleToEm(1024)
+CIDFlatten()
+Generate(".NotoSansJP-Regular.otf")
+
+Open(".NotoSansJP-Regular.otf")
+MergeFonts(".NotoSansSymbols2-Regular.otf")
+MergeFonts(".NotoEmoji-Regular.otf")
+MergeFonts(".KeyboardInternalCustomGlyph.sfd")
+Generate(".NotoMerged-Regular.otf")

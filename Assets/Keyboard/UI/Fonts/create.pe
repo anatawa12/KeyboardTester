@@ -1,0 +1,64 @@
+#!/usr/bin/env fontforge
+
+Open(".NotoMerged-Regular.otf")
+
+map = [  \
+  /* 0~7 initial number chars */ \
+  0u0030, 0uF000,  \
+  0u0031, 0uF001,  \
+  0u0032, 0uF002,  \
+  0u0033, 0uF003,  \
+  0u0034, 0uF004,  \
+  0u0035, 0uF005,  \
+  0u0036, 0uF006,  \
+  0u0037, 0uF007,  \
+\
+  /* 0u232B: Erase To the Left: ⌫ */ \
+  0u232B, 0uE000,  \
+  /* 0u2423: Open Box: &blank;: ␣ */ \
+  0u2423, 0uE001,  \
+  /* 0uE002 */ \
+  /* 1F310: Globe with Meridians: 🌐 */ \
+  0u1F310, 0uE003,  \
+\
+  /* to avoid trailing comma */ \
+  0 \
+]
+
+converted = []
+
+# 0~7 for initial chars
+i=0
+while ( i + 1 < SizeOf(map) )
+  from = map[i]
+  to = map[i + 1]
+  Print("copying ", from, " to ", to)
+  Select(from)
+  Copy()
+  Select(to)
+  Paste()
+  CopyFgToBg()
+  converted = converted + to
+  i += 2
+endloop
+
+// 0uE002 is copied from CustomGlyph
+converted = converted + 0uE002
+
+SelectAll()
+
+# unselect converted
+i = 0
+while ( i < SizeOf(converted) )
+  SelectFewer(converted[i])
+  i++
+endloop
+
+Clear()
+
+SetFontNames( \
+    "KeyboardInternal", \
+    "KeyboardInternal", \
+    "KeyboardInternal")
+
+Generate("KeyboardInternal.otf")
