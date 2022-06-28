@@ -15,9 +15,11 @@ public class Keyboard : UdonSharpBehaviour
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
     private char[][][] _keyboardTables;
+    private char[][][] _flippedKeyboardTables;
     private TextMeshProUGUI[][] _charTMPs;
 
     [NonSerialized] public char[][] ActiveTable;
+    [NonSerialized] public char[][] FlippedActiveTable;
     [NonSerialized] public int LeftAngle = -1;
     [NonSerialized] public int RightAngle = -1;
 
@@ -38,7 +40,7 @@ public class Keyboard : UdonSharpBehaviour
     private void Start()
     {
         mainText.text = "";
-        _keyboardTables = MakeTables(str:
+        MakeTables(str:
             // table 0 is reserved for signs
             "(" + "[" + "{" + "<" + "\\" + ";" + "-" + "=" +
             ")" + "]" + "}" + ">" + "/" + ":" + "+" + "_" +
@@ -214,6 +216,7 @@ public class Keyboard : UdonSharpBehaviour
     private void TableChanged(int activeTable)
     {
         ActiveTable = _keyboardTables[activeTable];
+        FlippedActiveTable = _flippedKeyboardTables[activeTable];
         for (var i = 0; i < 8; i++)
         for (var j = 0; j < 8; j++)
             _charTMPs[i][j].text = ActiveTable[i][j].ToString();
@@ -223,7 +226,7 @@ public class Keyboard : UdonSharpBehaviour
         _charTMPs[7][7].text = "\U0001F310"; // Globe with Meridians: 🌐
     }
 
-    private char[][][] MakeTables(string str)
+    private void MakeTables(string str)
     {
         if (str.Length % 64 != 0)
         {
@@ -249,12 +252,29 @@ public class Keyboard : UdonSharpBehaviour
                 for (var k = 0; k < 8; k++)
                 {
                     Debug.Log($"access: {i * 64 + j * 8 + k}");
-                    row[k] = chars[i * 64 + j * 8 + k];
+                    var c = chars[i * 64 + j * 8 + k];
+
+                    row[k] = c;
                 }
             }
         }
 
-        return tables;
+        _keyboardTables = tables;
+        var flipped = new char[tableCnt][][];
+        
+        for (var i = 0; i < tableCnt; i++)
+        {
+            var table = flipped[i] = new char[8][];
+            for (var j = 0; j < 8; j++)
+            {
+                var row = table[j] = new char[8];
+
+                for (var k = 0; k < 8; k++)
+                    row[k] = tables[i][k][j];
+            }
+        }
+
+        _flippedKeyboardTables = flipped;
     }
 
     private void PressChanged(bool left)
