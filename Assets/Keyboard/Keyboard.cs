@@ -28,6 +28,18 @@ public class Keyboard : UdonSharpBehaviour
     public const char OpSignPlane  = '\uE002';
     public const char OpNextPlane  = '\uE003';
 
+    // Japanese specifics
+    public const char OpJpSmall             = '\uE010'; // small hiragana like ぁ
+    public const char OpJpDakuten           = '\uE011'; // Dakuten
+    public const char OpJpHandakuten        = '\uE012'; // Handakuten
+    public const char OpJpNextCandidate     = '\uE013'; // conversion request or show next candidate
+    public const char OpJpSelectCandidate   = '\uE014'; // conversion select
+    // TODO: consider merge small hiragana & (Han)? Dakuten as 12-key smartphone keyboard does
+    //   and add support for separated conversion
+    //   separated conversion:
+    //     for きょうはいいてんきですね, separate the string to (きょうは)(いい)(てんき)(ですね)
+    //     and convert per each selection
+
     private const float ActiveMinSqrt = 0.75f * 0.75f;
     private const float IgnoreMaxSqrt = 0.80f * 0.80f;
     // tan(90/4*1 = 22.5[deg])
@@ -57,24 +69,14 @@ public class Keyboard : UdonSharpBehaviour
             "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0" + "\0" +
 
             // table 1: Japanese.
-            // \u0001: small hiragana like ぁ
-            // \u0002: Dakuten
-            // \u0003: Handakuten
-            // \u0004: conversion request or show next candidate
-            // \u0005: conversion select
-            // TODO: consider merge small hiragana & (Han)? Dakuten as 12-key smartphone keyboard does
-            //   and add support for separated conversion
-            //   separated conversion:
-            //     for きょうはいいてんきですね, separate the string to (きょうは)(いい)(てんき)(ですね)
-            //     and convert per each selection
             "あ" + "い" + "う" + "え" + "お" + "や" + "ゆ" + "よ" +
             "か" + "き" + "く" + "け" + "こ" + "わ" + "を" + "ん" +
             "さ" + "し" + "す" + "せ" + "そ" + "「" + "。" + "?" +
             "た" + "ち" + "つ" + "て" + "と" + "」" + "、" + "!" +
-            "な" + "に" + "ぬ" + "ね" + "の" + "〜" + "\u0002" + "\0" +
-            "は" + "ひ" + "ふ" + "へ" + "ほ" + "ー" + "\u0003" + "\u0001" +
-            "ま" + "み" + "む" + "め" + "も" + "\u0004" + "\0" + "\0" +
-            "ら" + "り" + "る" + "れ" + "ろ" + "\u0005" + "\0" + "\0" +
+            "な" + "に" + "ぬ" + "ね" + "の" + "〜" + OpJpDakuten + "\0" +
+            "は" + "ひ" + "ふ" + "へ" + "ほ" + "ー" + OpJpHandakuten + OpJpSmall +
+            "ま" + "み" + "む" + "め" + "も" + OpJpNextCandidate + "\0" + "\0" +
+            "ら" + "り" + "る" + "れ" + "ろ" + OpJpSelectCandidate + "\0" + "\0" +
 
             // table 2: English
             "a" + "b" + "c" + "d" + "e" + "f" + "g" + "h" +
@@ -183,6 +185,18 @@ public class Keyboard : UdonSharpBehaviour
 
                 TableChanged(_activeTable);
                 break;
+            
+            // japanese
+            case OpJpSmall:
+            case OpJpDakuten:
+            case OpJpHandakuten:
+                // TODO
+                break;
+            case OpJpNextCandidate:
+            case OpJpSelectCandidate:
+                // currently nop
+                break;
+
             default:
                 mainText.text += c;
                 break;
