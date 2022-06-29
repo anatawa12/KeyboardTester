@@ -258,6 +258,10 @@ public class Keyboard : UdonSharpBehaviour
                     row[k] = c;
                 }
             }
+            table[6][6] = OpDeleteChar;
+            table[6][7] = OpBlank;
+            table[7][6] = OpSignPlane;
+            table[7][7] = OpNextPlane;
         }
 
         _keyboardTables = tables;
@@ -273,10 +277,6 @@ public class Keyboard : UdonSharpBehaviour
                 for (var k = 0; k < 8; k++)
                     row[k] = tables[i][k][j];
             }
-            table[6][6] = OpDeleteChar;
-            table[6][7] = OpBlank;
-            table[7][6] = OpSignPlane;
-            table[7][7] = OpNextPlane;
         }
 
         _flippedKeyboardTables = flipped;
