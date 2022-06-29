@@ -1370,11 +1370,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: VectorSelection (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 3751750960562164866, guid: 60354b7ad72ef4b9dbbe1f556bac4e53,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60354b7ad72ef4b9dbbe1f556bac4e53, type: 3}
 --- !u!224 &7043120135368867209 stripped
@@ -1419,11 +1414,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VectorSelection (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3751750960562164866, guid: 60354b7ad72ef4b9dbbe1f556bac4e53,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60354b7ad72ef4b9dbbe1f556bac4e53, type: 3}
