@@ -23,6 +23,11 @@ public class Keyboard : UdonSharpBehaviour
     [NonSerialized] public int LeftAngle = -1;
     [NonSerialized] public int RightAngle = -1;
 
+    public const char OpDeleteChar = '\uE000';
+    public const char OpBlank      = '\uE001';
+    public const char OpSignPlane  = '\uE002';
+    public const char OpNextPlane  = '\uE003';
+
     private const float ActiveMinSqrt = 0.75f * 0.75f;
     private const float IgnoreMaxSqrt = 0.80f * 0.80f;
     // tan(90/4*1 = 22.5[deg])
@@ -220,10 +225,6 @@ public class Keyboard : UdonSharpBehaviour
         for (var i = 0; i < 8; i++)
         for (var j = 0; j < 8; j++)
             _charTMPs[i][j].text = ActiveTable[i][j].ToString();
-        _charTMPs[6][6].text = "\u232b"; // Erase To the Left: ⌫
-        _charTMPs[6][7].text = "\u2423"; // Open Box: &blank;: ␣
-        _charTMPs[7][6].text = "#!";
-        _charTMPs[7][7].text = "\U0001F310"; // Globe with Meridians: 🌐
     }
 
     private void MakeTables(string str)
@@ -272,6 +273,10 @@ public class Keyboard : UdonSharpBehaviour
                 for (var k = 0; k < 8; k++)
                     row[k] = tables[i][k][j];
             }
+            table[6][6] = OpDeleteChar;
+            table[6][7] = OpBlank;
+            table[7][6] = OpSignPlane;
+            table[7][7] = OpNextPlane;
         }
 
         _flippedKeyboardTables = flipped;
