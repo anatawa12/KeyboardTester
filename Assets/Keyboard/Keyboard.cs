@@ -14,14 +14,14 @@ public class Keyboard : UdonSharpBehaviour
 
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
-    private char[][][] _keyboardTables;
-    private char[][][] _flippedKeyboardTables;
-    private TextMeshProUGUI[][] _charTMPs;
+    private char[][] _keyboardTables;
+    private TextMeshProUGUI[] _charTMPs;
 
-    [NonSerialized] public char[][] ActiveTable;
-    [NonSerialized] public char[][] FlippedActiveTable;
+    [NonSerialized] public char[] ActiveTable;
     [NonSerialized] public int LeftAngle = -1;
     [NonSerialized] public int RightAngle = -1;
+
+    public const int TableSize = 8 * 8;
 
     public const char OpDeleteChar = '\uE000';
     public const char OpBlank      = '\uE001';
@@ -89,14 +89,10 @@ public class Keyboard : UdonSharpBehaviour
             "Y" + "Z" + "\'" + "," + "!" + "-" + "\0" + "\0" +
             "");
 
-        _charTMPs = new TextMeshProUGUI[8][];
-        for (var i = 0; i < 8; i++)
-        {
-            _charTMPs[i] = new TextMeshProUGUI[8];
-            for (var j = 0; j < 8; j++)
-                _charTMPs[i][j] = (TextMeshProUGUI)tableRoot.transform.GetChild(i * 8 + j).gameObject
-                    .GetComponent(typeof(TextMeshProUGUI));
-        }
+        _charTMPs = new TextMeshProUGUI[TableSize];
+        for (var i = 0; i < TableSize; i++)
+            _charTMPs[i] = (TextMeshProUGUI)tableRoot.transform.GetChild(i).gameObject
+                .GetComponent(typeof(TextMeshProUGUI));
 
         TableChanged(_activeTable);
     }
@@ -157,7 +153,7 @@ public class Keyboard : UdonSharpBehaviour
         if (leftAngle < 0) return;
         if (rightAngle < 0) return;
 
-        var c = ActiveTable[leftAngle][rightAngle];
+        var c = ActiveTable[leftAngle * 8 + rightAngle];
         switch (c)
         {
             case '\0':
@@ -214,10 +210,8 @@ public class Keyboard : UdonSharpBehaviour
     private void TableChanged(int activeTable)
     {
         ActiveTable = _keyboardTables[activeTable];
-        FlippedActiveTable = _flippedKeyboardTables[activeTable];
-        for (var i = 0; i < 8; i++)
-        for (var j = 0; j < 8; j++)
-            _charTMPs[i][j].text = ActiveTable[i][j].ToString();
+        for (var i = 0; i < TableSize; i++)
+            _charTMPs[i].text = ActiveTable[i].ToString();
     }
 
     private void MakeTables(string str)
@@ -233,46 +227,21 @@ public class Keyboard : UdonSharpBehaviour
         }
 
         char[] chars = str.ToCharArray();
-        var tableCnt = str.Length / (8 * 8);
-        var tables = new char[tableCnt][][];
+        var tableCnt = str.Length / TableSize;
+        var tables = new char[tableCnt][];
 
         for (var i = 0; i < tableCnt; i++)
         {
-            var table = tables[i] = new char[8][];
-            for (var j = 0; j < 8; j++)
-            {
-                var row = table[j] = new char[8];
-
-                for (var k = 0; k < 8; k++)
-                {
-                    Debug.Log($"access: {i * 64 + j * 8 + k}");
-                    var c = chars[i * 64 + j * 8 + k];
-
-                    row[k] = c;
-                }
-            }
-            table[6][6] = OpDeleteChar;
-            table[6][7] = OpBlank;
-            table[7][6] = OpSignPlane;
-            table[7][7] = OpNextPlane;
+            var table = tables[i] = new char[TableSize];
+            for (var j = 0; j < TableSize; j++)
+                table[j] = chars[i * TableSize + j];
+            table[6 * 8 + 6] = OpDeleteChar;
+            table[6 * 8 + 7] = OpBlank;
+            table[7 * 8 + 6] = OpSignPlane;
+            table[7 * 8 + 7] = OpNextPlane;
         }
 
         _keyboardTables = tables;
-        var flipped = new char[tableCnt][][];
-        
-        for (var i = 0; i < tableCnt; i++)
-        {
-            var table = flipped[i] = new char[8][];
-            for (var j = 0; j < 8; j++)
-            {
-                var row = table[j] = new char[8];
-
-                for (var k = 0; k < 8; k++)
-                    row[k] = tables[i][k][j];
-            }
-        }
-
-        _flippedKeyboardTables = flipped;
     }
 
     private void PressChanged(bool left)
