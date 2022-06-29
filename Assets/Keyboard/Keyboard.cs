@@ -154,68 +154,47 @@ public class Keyboard : UdonSharpBehaviour
         Log($"input char with {leftAngle} {rightAngle}");
         if (leftAngle < 0) return;
         if (rightAngle < 0) return;
-        // 6,6~7,7 is reserved
-        switch (leftAngle)
-        {
-            case 6:
-                switch (rightAngle)
-                {
-                    case 6:
-                        if (mainText.text.Length != 0)
-                            mainText.text = mainText.text.Substring(0, mainText.text.Length - 1);
-                        return;
-                    case 7:
-                        mainText.text += ' ';
-                        return;
-                }
-
-                break;
-            case 7:
-                switch (rightAngle)
-                {
-                    case 6:
-                        if (_activeTableOld == 0)
-                        {
-                            _activeTableOld = _activeTable;
-                            _activeTable = 0;
-                        }
-                        else
-                        {
-                            _activeTable = _activeTableOld;
-                            _activeTableOld = 0;
-                        }
-
-                        TableChanged(_activeTable);
-                        return;
-                    case 7:
-                        if (_activeTableOld != 0)
-                        {
-                            _activeTable = _activeTableOld;
-                            _activeTableOld = 0;
-                        }
-
-                        _activeTable++;
-                        if (_activeTable == _keyboardTables.Length)
-                            _activeTable = 1;
-
-                        TableChanged(_activeTable);
-                        return;
-                }
-
-                break;
-        }
 
         var c = ActiveTable[leftAngle][rightAngle];
-        if (c == 0)
-            return;
-        if (c < ' ')
+        switch (c)
         {
-            // TODO: implement extra operations
-            Log($"unimplemented operator char: {(int)c:x2}");
-            return;
-        }
+            case '\0':
+                break;
+            // generic operations
+            case OpDeleteChar:
+                if (mainText.text.Length != 0)
+                    mainText.text = mainText.text.Substring(0, mainText.text.Length - 1);
+                break;
+            case OpBlank:
+                mainText.text += ' ';
+                break;
+            case OpSignPlane:
+                Swap(ref _activeTableOld, ref _activeTable);
 
-        mainText.text += c;
+                TableChanged(_activeTable);
+                break;
+            case OpNextPlane:
+                if (_activeTable == 0)
+                    Swap(ref _activeTableOld, ref _activeTable);
+
+                _activeTable++;
+                if (_activeTable == _keyboardTables.Length)
+                    _activeTable = 1;
+
+                TableChanged(_activeTable);
+                break;
+            default:
+                mainText.text += c;
+                break;
+        }
+    }
+
+    private static void Swap<T>(ref T a, ref T b)
+    {
+        // ReSharper disable once SwapViaDeconstruction
+        var tmp = a;
+        a = b;
+        b = tmp;
     }
 
     private void TableChanged(int activeTable)
