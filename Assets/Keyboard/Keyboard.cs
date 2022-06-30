@@ -9,7 +9,7 @@ public class Keyboard : UdonSharpBehaviour
 {
     public TextMeshPro logText;
     public TextMeshPro mainText;
-    public KeyboardDisplay display; 
+    public KeyboardDisplay[] displays; 
 
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
@@ -122,7 +122,8 @@ public class Keyboard : UdonSharpBehaviour
             _log;
 
         if (anglesLeftOld != LeftAngle || anglesRightOld != RightAngle)
-            display.OnInput(LeftAngle, RightAngle);
+            foreach (var display in displays)
+                display.OnInput(LeftAngle, RightAngle);
     }
 
     private void InputChar(int leftAngle, int rightAngle)
@@ -188,7 +189,8 @@ public class Keyboard : UdonSharpBehaviour
     private void TableChanged(int activeTable)
     {
         ActiveTable = _keyboardTables[activeTable];
-        display.OnTableChanged(ActiveTable);
+        foreach (var display in displays)
+            display.OnTableChanged(ActiveTable);
     }
 
     private void MakeTables(string str)
