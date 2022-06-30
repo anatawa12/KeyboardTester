@@ -9,7 +9,7 @@ public class RingCharsController : UdonSharpBehaviour
     {
         meshs = new TextMeshProUGUI[8];
         for (var i = 0; i < 8; i++)
-            meshs[i] = transform.GetChild(8).gameObject.GetComponent<TextMeshProUGUI>();
+            meshs[i] = transform.GetChild(i).gameObject.GetComponent<TextMeshProUGUI>();
     }
 
     public void SetChars(char char0, char char1, char char2, char char3, char char4, char char5, char char6, char char7)
