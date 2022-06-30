@@ -36,7 +36,7 @@ public class UIRingController : KeyboardDisplay
 
     private void Update()
     {
-        stick.anchoredPosition = Keyboard.GetStickPos(hand) * 25 + new Vector2(25, 25);
+        stick.anchoredPosition = Keyboard.GetStickPos(hand) * 25;
     }
 
     public override void OnInput(int left, int right)
