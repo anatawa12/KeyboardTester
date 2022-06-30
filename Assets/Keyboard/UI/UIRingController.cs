@@ -1,12 +1,14 @@
 ﻿
 using System;
 using UdonSharp;
+using UnityEngine;
 
 public class UIRingController : KeyboardDisplay
 {
     public RingCharsController singleChars;
     public RingCharsController[] vectorSelections;
-    public LeftOrRight hand; 
+    public LeftOrRight hand;
+    public RectTransform stick;
 
     [NonSerialized] public int Index = -2;
     private char[] _table;
@@ -30,6 +32,11 @@ public class UIRingController : KeyboardDisplay
                 ((object)null).ToString();
                 break;
         }
+    }
+
+    private void Update()
+    {
+        stick.anchoredPosition = Keyboard.GetStickPos(hand) * 25 + new Vector2(25, 25);
     }
 
     public override void OnInput(int left, int right)
