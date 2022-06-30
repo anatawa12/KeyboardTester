@@ -97,10 +97,8 @@ public class Keyboard : UdonSharpBehaviour
 
     private void Update()
     {
-        var leftInput = new Vector2(Input.GetAxisRaw("Oculus_CrossPlatform_PrimaryThumbstickHorizontal"),
-            Input.GetAxisRaw("Oculus_CrossPlatform_PrimaryThumbstickVertical"));
-        var rightInput = new Vector2(Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickHorizontal"),
-            Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickVertical"));
+        var leftInput = GetStickPos(LeftOrRight.Left);
+        var rightInput = GetStickPos(LeftOrRight.Right);
         var pressingBoth = _leftPressing && _rightPressing;
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
@@ -124,6 +122,21 @@ public class Keyboard : UdonSharpBehaviour
         if (anglesLeftOld != LeftAngle || anglesRightOld != RightAngle)
             foreach (var display in displays)
                 display.OnInput(LeftAngle, RightAngle);
+    }
+
+    public static Vector2 GetStickPos(LeftOrRight hand)
+    {
+        switch (hand)
+        {
+            case LeftOrRight.Left:
+                return new Vector2(Input.GetAxisRaw("Oculus_CrossPlatform_PrimaryThumbstickHorizontal"),
+                    Input.GetAxisRaw("Oculus_CrossPlatform_PrimaryThumbstickVertical"));
+            case LeftOrRight.Right:
+                return new Vector2(Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickHorizontal"),
+                    Input.GetAxisRaw("Oculus_CrossPlatform_SecondaryThumbstickVertical"));
+            default:
+                return Vector2.zero;
+        }
     }
 
     private void InputChar(int leftAngle, int rightAngle)
