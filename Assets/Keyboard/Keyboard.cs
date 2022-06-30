@@ -2,20 +2,18 @@
 using TMPro;
 using UdonSharp;
 using UnityEngine;
+using VRC.Udon.Common.Interfaces;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
 public class Keyboard : UdonSharpBehaviour
 {
     public TextMeshPro logText;
     public TextMeshPro mainText;
-    public RectTransform rowCursor;
-    public RectTransform colCursor;
-    public GameObject tableRoot;
+    public KeyboardDisplay display; 
 
     // \0 is used for the slot not defined
     // \u0001~\u001F can be used for locale specific
     private char[][] _keyboardTables;
-    private TextMeshProUGUI[] _charTMPs;
 
     [NonSerialized] public char[] ActiveTable;
     [NonSerialized] public int LeftAngle = -1;
@@ -89,11 +87,6 @@ public class Keyboard : UdonSharpBehaviour
             "Y" + "Z" + "\'" + "," + "!" + "-" + "\0" + "\0" +
             "");
 
-        _charTMPs = new TextMeshProUGUI[TableSize];
-        for (var i = 0; i < TableSize; i++)
-            _charTMPs[i] = (TextMeshProUGUI)tableRoot.transform.GetChild(i).gameObject
-                .GetComponent(typeof(TextMeshProUGUI));
-
         TableChanged(_activeTable);
     }
 
@@ -116,6 +109,8 @@ public class Keyboard : UdonSharpBehaviour
             InputChar(LeftAngle, RightAngle);
         }
 
+        var anglesLeftOld = LeftAngle;
+        var anglesRightOld = RightAngle;
         LeftAngle = _leftPressing ? StickAngle(leftInput) : -1;
         RightAngle = _rightPressing ? StickAngle(rightInput) : -1;
         logText.text =
@@ -126,25 +121,8 @@ public class Keyboard : UdonSharpBehaviour
             $"table: {_activeTable}\n" +
             _log;
 
-        if (LeftAngle == -1)
-        {
-            rowCursor.gameObject.SetActive(false);
-        }
-        else
-        {
-            rowCursor.gameObject.SetActive(true);
-            rowCursor.anchoredPosition = new Vector2(0, 3.5f - LeftAngle);
-        }
-
-        if (RightAngle == -1)
-        {
-            colCursor.gameObject.SetActive(false);
-        }
-        else
-        {
-            colCursor.gameObject.SetActive(true);
-            colCursor.anchoredPosition = new Vector2(-3.5f + RightAngle, 0);
-        }
+        if (anglesLeftOld != LeftAngle || anglesRightOld != RightAngle)
+            display.OnInput(LeftAngle, RightAngle);
     }
 
     private void InputChar(int leftAngle, int rightAngle)
@@ -210,8 +188,7 @@ public class Keyboard : UdonSharpBehaviour
     private void TableChanged(int activeTable)
     {
         ActiveTable = _keyboardTables[activeTable];
-        for (var i = 0; i < TableSize; i++)
-            _charTMPs[i].text = ActiveTable[i].ToString();
+        display.OnTableChanged(ActiveTable);
     }
 
     private void MakeTables(string str)
@@ -311,4 +288,10 @@ public class Keyboard : UdonSharpBehaviour
             return stick.x > 0 ? 2 : 6;
         }
     }
+}
+
+public abstract class KeyboardDisplay : UdonSharpBehaviour
+{
+    public abstract void OnInput(int left, int right);
+    public abstract void OnTableChanged(char[] newTable);
 }
