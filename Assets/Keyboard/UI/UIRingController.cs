@@ -87,9 +87,3 @@ public class UIRingController : KeyboardDisplay
         _table = newTable;
     }
 }
-
-public enum LeftOrRight
-{
-    Left,
-    Right,
-}

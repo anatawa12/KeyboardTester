@@ -297,3 +297,9 @@ public abstract class KeyboardDisplay : UdonSharpBehaviour
     public abstract void OnInput(int left, int right);
     public abstract void OnTableChanged(char[] newTable);
 }
+
+public enum LeftOrRight
+{
+    Left,
+    Right,
+}
