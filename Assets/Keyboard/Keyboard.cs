@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UdonSharp;
 using UnityEngine;
@@ -192,9 +193,13 @@ public class Keyboard : UdonSharpBehaviour
             
             // japanese
             case OpJpSmall:
+                JpOnSmallChar();
+                break;
             case OpJpDakuten:
+                JpOnDakuten();
+                break;
             case OpJpHandakuten:
-                // TODO
+                JpOnHandakuten();
                 break;
             case OpJpNextCandidate:
             case OpJpSelectCandidate:
@@ -318,6 +323,69 @@ public class Keyboard : UdonSharpBehaviour
         {
             return stick.x > 0 ? 2 : 6;
         }
+    }
+
+    #region Japanese specific
+
+    void JpOnSmallChar()
+    {
+        if (mainText.text.Length == 0)
+            return;
+        var cur = mainText.text[mainText.text.Length - 1];
+        var repl = '\0';
+
+        
+        if ("あいうえおつやゆよわ".IndexOf(cur) != -1)
+            ReplaceLast((char)(cur - 1));
+        else if ("ぁぃぅぇぉっゃゅょゎ".IndexOf(cur) != -1)
+            ReplaceLast((char)(cur - 1));
+        else switch (cur)
+        {
+            // @formatter:off
+            case 'か': ReplaceLast('ゕ'); break;
+            case 'ゕ': ReplaceLast('か'); break;
+            case 'け': ReplaceLast('ゖ'); break;
+            case 'ゖ': ReplaceLast('け'); break;
+            // @formatter:on
+        }
+    }
+
+    void JpOnDakuten()
+    {
+        if (mainText.text.Length == 0)
+            return;
+        var cur = mainText.text[mainText.text.Length - 1];
+
+        if ("かきくけこさしすせそたちつてとはひふへほ".IndexOf(cur) != -1)
+            ReplaceLast((char)(cur + 1));
+        else if ("がぎぐげござじずぜぞだぢづでどばびぶべぼ".IndexOf(cur) != -1)
+            ReplaceLast((char)(cur - 1));
+        else switch (cur)
+        {
+            // @formatter:off
+            case 'う': ReplaceLast('ゔ'); break;
+            case 'ゔ': ReplaceLast('う'); break;
+            // @formatter:on
+        }
+    }
+
+    void JpOnHandakuten()
+    {
+        if (mainText.text.Length == 0)
+            return;
+        var cur = mainText.text[mainText.text.Length - 1];
+
+        if ("はひふへほ".IndexOf(cur) != -1)
+            ReplaceLast((char)(cur + 2));
+        else if ("ぱぴぷぺぽ".IndexOf(cur) != -1)
+            ReplaceLast((char)(cur - 2));
+    }
+
+    #endregion
+
+    private void ReplaceLast(char replace)
+    {
+        mainText.text = mainText.text.Substring(0, mainText.text.Length - 1) + replace;
     }
 }
 
