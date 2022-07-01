@@ -16683,6 +16683,7 @@ GameObject:
   - component: {fileID: 1828510115}
   - component: {fileID: 1828510120}
   - component: {fileID: 1828510119}
+  - component: {fileID: 1828510121}
   m_Layer: 0
   m_Name: ConfigUI
   m_TagString: Untagged
@@ -16824,6 +16825,18 @@ MonoBehaviour:
   keyboard: {fileID: 1616326689}
   sensitivity: {fileID: 1142151852}
   triggerToInput: {fileID: 16008862}
+--- !u!114 &1828510121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828510114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1533785930, guid: 661092b4961be7145bfbe56e1e62337b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1858809190
 GameObject:
   m_ObjectHideFlags: 0
