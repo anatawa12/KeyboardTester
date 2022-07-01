@@ -338,7 +338,7 @@ public class Keyboard : UdonSharpBehaviour
         if ("あいうえおつやゆよわ".IndexOf(cur) != -1)
             ReplaceLast((char)(cur - 1));
         else if ("ぁぃぅぇぉっゃゅょゎ".IndexOf(cur) != -1)
-            ReplaceLast((char)(cur - 1));
+            ReplaceLast((char)(cur + 1));
         else switch (cur)
         {
             // @formatter:off
