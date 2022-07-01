@@ -38,8 +38,8 @@ public class Keyboard : UdonSharpBehaviour
     //     for きょうはいいてんきですね, separate the string to (きょうは)(いい)(てんき)(ですね)
     //     and convert per each selection
 
-    private const float ActiveMinSqrt = 0.75f * 0.75f;
-    private const float IgnoreMaxSqrt = 0.80f * 0.80f;
+    [NonSerialized] public float ActiveMinSqrt = 0.75f * 0.75f;
+    [NonSerialized] public float IgnoreMaxSqrt = 0.80f * 0.80f;
     // tan(90/4*1 = 22.5[deg])
     private const float Tan1QuoterRightAngle = 0.41421356237f;
     // tan(90/4*3 = 67.5[deg]) = 1/tan(90/4*1 = 22.5[deg])
