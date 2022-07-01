@@ -16,8 +16,8 @@ public class Keyboard : UdonSharpBehaviour
     private char[][] _keyboardTables;
 
     [NonSerialized] public char[] ActiveTable;
-    [NonSerialized] public int LeftAngle = -1;
-    [NonSerialized] public int RightAngle = -1;
+    [NonSerialized] public int LeftAngle = -2;
+    [NonSerialized] public int RightAngle = -2;
 
     public const int TableSize = 8 * 8;
 
