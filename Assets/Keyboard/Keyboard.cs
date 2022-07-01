@@ -2,6 +2,7 @@
 using TMPro;
 using UdonSharp;
 using UnityEngine;
+using VRC.Udon.Common;
 using VRC.Udon.Common.Interfaces;
 
 [UdonBehaviourSyncMode(BehaviourSyncMode.NoVariableSync)]
@@ -40,6 +41,8 @@ public class Keyboard : UdonSharpBehaviour
 
     [NonSerialized] public float ActiveMinSqrt = 0.75f * 0.75f;
     [NonSerialized] public float IgnoreMaxSqrt = 0.80f * 0.80f;
+    [NonSerialized] public bool TriggerToInput = true;
+
     // tan(90/4*1 = 22.5[deg])
     private const float Tan1QuoterRightAngle = 0.41421356237f;
     // tan(90/4*3 = 67.5[deg]) = 1/tan(90/4*1 = 22.5[deg])
@@ -102,10 +105,12 @@ public class Keyboard : UdonSharpBehaviour
         var pressingBoth = _leftPressing && _rightPressing;
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
-        if (pressingBoth && (!_leftPressing || !_rightPressing))
-        {
-            InputChar(LeftAngle, RightAngle);
-        }
+
+        if (!TriggerToInput)
+            if (pressingBoth && (!_leftPressing || !_rightPressing))
+            {
+                InputChar(LeftAngle, RightAngle);
+            }
 
         var anglesLeftOld = LeftAngle;
         var anglesRightOld = RightAngle;
@@ -122,6 +127,12 @@ public class Keyboard : UdonSharpBehaviour
         if (anglesLeftOld != LeftAngle || anglesRightOld != RightAngle)
             foreach (var display in displays)
                 display.OnInput(LeftAngle, RightAngle);
+    }
+
+    public override void InputUse(bool value, UdonInputEventArgs args)
+    {
+        if (value && TriggerToInput)
+            InputChar(LeftAngle, RightAngle);
     }
 
     public static Vector2 GetStickPos(LeftOrRight hand)
