@@ -10,8 +10,9 @@ public class ConfigUI : UdonSharpBehaviour
 
     void Update()
     {
-        keyboard.ActiveMinSqrt = sensitivity.value * sensitivity.value;
-        keyboard.IgnoreMaxSqrt = (sensitivity.value + 0.05f) * (sensitivity.value + 0.05f);
+        var sensitivity = 1f - this.sensitivity.value;
+        keyboard.ActiveMinSqrt = sensitivity * sensitivity;
+        keyboard.IgnoreMaxSqrt = (sensitivity + 0.05f) * (sensitivity + 0.05f);
         keyboard.TriggerToInput = triggerToInput.isOn;
     }
 }
