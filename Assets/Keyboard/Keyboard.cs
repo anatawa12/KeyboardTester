@@ -46,7 +46,7 @@ public class Keyboard : UdonSharpBehaviour
     // tan(90/4*1 = 22.5[deg])
     private const float Tan1QuoterRightAngle = 0.41421356237f;
     // tan(90/4*3 = 67.5[deg]) = 1/tan(90/4*1 = 22.5[deg])
-    private const float Tan3QuoterRightAngle = 22.5881805325f;
+    private const float Tan3QuoterRightAngle = 2.41421356237f;
 
     private int _activeTable = 1;
     private int _activeTableOld = 0;
