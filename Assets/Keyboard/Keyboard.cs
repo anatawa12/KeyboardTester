@@ -129,6 +129,11 @@ public class Keyboard : UdonSharpBehaviour
                 display.OnInput(LeftAngle, RightAngle);
     }
 
+    public void OnClear()
+    {
+        mainText.text = "";
+    }
+
     public override void InputUse(bool value, UdonInputEventArgs args)
     {
         if (value && TriggerToInput)
