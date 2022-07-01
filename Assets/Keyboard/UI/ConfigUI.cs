@@ -8,7 +8,7 @@ public class ConfigUI : UdonSharpBehaviour
     public Slider sensitivity;
     public Toggle triggerToInput;
 
-    void Start()
+    void Update()
     {
         keyboard.ActiveMinSqrt = sensitivity.value * sensitivity.value;
         keyboard.IgnoreMaxSqrt = (sensitivity.value + 0.05f) * (sensitivity.value + 0.05f);
