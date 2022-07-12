@@ -18,6 +18,7 @@ public class UIRingController : KeyboardDisplay
 
     private void Start()
     {
+        _table = new char[64];
         switch (hand)
         {
             case LeftOrRight.Left:
