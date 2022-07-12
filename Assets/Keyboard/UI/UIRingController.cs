@@ -89,8 +89,9 @@ public class UIRingController : KeyboardDisplay
         }
     }
 
-    public override void OnTableChanged(char[] newTable)
+    public override void OnTableChanged(char[] newTable, int leftAngle, int rightAngle)
     {
         _table = newTable;
+        OnInput(leftAngle, rightAngle);
     }
 }

@@ -42,7 +42,7 @@ public class TableUIController : KeyboardDisplay
         }
     }
 
-    public override void OnTableChanged(char[] newTable)
+    public override void OnTableChanged(char[] newTable, int leftAngle, int rightAngle)
     {
         for (var i = 0; i < Keyboard.TableSize; i++)
             _charTMPs[i].text = newTable[i].ToString();

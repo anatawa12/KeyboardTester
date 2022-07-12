@@ -224,7 +224,7 @@ public class Keyboard : UdonSharpBehaviour
     {
         ActiveTable = _keyboardTables[activeTable];
         foreach (var display in displays)
-            display.OnTableChanged(ActiveTable);
+            display.OnTableChanged(ActiveTable, LeftAngle, RightAngle);
     }
 
     private void MakeTables(string str)
@@ -392,7 +392,7 @@ public class Keyboard : UdonSharpBehaviour
 public abstract class KeyboardDisplay : UdonSharpBehaviour
 {
     public abstract void OnInput(int left, int right);
-    public abstract void OnTableChanged(char[] newTable);
+    public abstract void OnTableChanged(char[] newTable, int leftAngle, int rightAngle);
 }
 
 public enum LeftOrRight
