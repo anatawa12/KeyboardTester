@@ -59,7 +59,7 @@ public class UIRingController : KeyboardDisplay
                 break;
         }
 
-        if (sub == -1)
+        if (sub < 0)
         {
             singleChars.Disable();
             for (var mainI = 0; mainI < 8; mainI++)
