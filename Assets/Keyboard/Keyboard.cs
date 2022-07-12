@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UdonSharp;
 using UnityEngine;
+using VRC.SDKBase;
 using VRC.Udon.Common;
 using VRC.Udon.Common.Interfaces;
 
@@ -125,9 +126,18 @@ public class Keyboard : UdonSharpBehaviour
             $"table: {_activeTable}\n" +
             _log;
 
-        if (anglesLeftOld != LeftAngle || anglesRightOld != RightAngle)
+        var leftChanged = anglesLeftOld != LeftAngle;
+        var rightChanged = anglesRightOld != RightAngle;
+
+        if (leftChanged || rightChanged)
             foreach (var display in displays)
                 display.OnInput(LeftAngle, RightAngle);
+
+        if (leftChanged)
+            Networking.LocalPlayer.PlayHapticEventInHand(VRC_Pickup.PickupHand.Left, 0.05f, 1, 1);
+
+        if (rightChanged)
+            Networking.LocalPlayer.PlayHapticEventInHand(VRC_Pickup.PickupHand.Right, 0.05f, 1, 1);
     }
 
     public void OnClear()
