@@ -5877,7 +5877,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "anatawa12\u304C\u3042\u308B\u65E5\u601D\u3044\u3064\u3044\u305FVR\u5411\u3051\u306E\u30AD\u30FC\u30DC\u30FC\u30C9\u3092\u3044\u304D\u306A\u308AOpenVROverlay\u30A2\u30D7\u30EA\u3067\u5B9F\u88C5\u3059\u308B\u306E\u3082\u5ACC\u3060\u3063\u305F\u306E\u3067UX\u306E\u8ABF\u67FB\u3082\u76EE\u7684\u306BVRChat\u306E\u30EF\u30FC\u30EB\u30C9\u3068\u3057\u3066\u5B9F\u88C5\u3057\u3066\u307F\u307E\u3057\u305F\u3002\n\n\u4F7F\u3044\u52DD\u624B\u306B\u95A2\u3057\u3066\u610F\u898B\u304C\u307B\u3057\u3044\u306E\u3067\u305C\u3072#anatawa12KBVRC\u3067\u30C4\u30A4\u30FC\u30C8\u3057\u3066\u304F\u3060\u3055\u3044\n\n\u53F3\u624B\u306B\u3042\u308B\u68D2\u3092\u30AF\u30EA\u30C3\u30AF\u3059\u308B\u3068sit\u3057\u307E\u3059\u3002sit\u3057\u305F\u3068\u304D\u306B\u53F3\u624B\u306B\u898B\u3048\u308B\u306E\u304C\u30B7\u30B9\u30C6\u30E0\u30ED\u30B0\u3001\u76EE\u306E\u524D\u304C\u30C6\u30AD\u30B9\u30C8\u5165\u529B\u6B04\u3067\u3059\u3002\u5DE6\u53F3\u306E\u30B5\u30E0\u30B9\u30C6\u30A3\u30C3\u30AF\u3092\u5012\u3057\u3066\u96E2\u3059\u3068\u6587\u5B57\u304C\u5165\u529B\u3055\u308C\u307E\u3059\u300212\u30AD\u30FC\u30D5\u30EA\u30C3\u30AF\u5165\u529B\u306B\u30D2\u30F3\u30C8\u3092\u5F97\u3066\u4F5C\u308A\u307E\u3057\u305F\u3002"
+  m_text: "anatawa12\u304C\u3042\u308B\u65E5\u601D\u3044\u3064\u3044\u305FVR\u5411\u3051\u306E\u30AD\u30FC\u30DC\u30FC\u30C9\u3092\u3044\u304D\u306A\u308AOpenVROverlay\u30A2\u30D7\u30EA\u3067\u5B9F\u88C5\u3059\u308B\u306E\u3082\u5ACC\u3060\u3063\u305F\u306E\u3067UX\u306E\u8ABF\u67FB\u3082\u76EE\u7684\u306BVRChat\u306E\u30EF\u30FC\u30EB\u30C9\u3068\u3057\u3066\u5B9F\u88C5\u3057\u3066\u307F\u307E\u3057\u305F\u3002\n\u4F7F\u3044\u52DD\u624B\u306B\u95A2\u3057\u3066\u610F\u898B\u304C\u307B\u3057\u3044\u306E\u3067\u305C\u3072#clekeyVRC\u3067\u30C4\u30A4\u30FC\u30C8\u3057\u3066\u304F\u3060\u3055\u3044\n\u30B5\u30E0\u30B9\u30C6\u30A3\u30C3\u30AF\u3092\u4F7F\u7528\u3059\u308B\u305F\u3081\u3001\u79FB\u52D5\u3057\u306A\u3044\u305F\u3081\u306B\u5EA7\u308B\u5FC5\u8981\u304C\u3042\u308A\u307E\u3059\u3002\u53F3\u624B\u306B\u3042\u308B\u68D2\u3092\u30AF\u30EA\u30C3\u30AF\u3057\u3066\u5EA7\u3063\u3066\u304F\u3060\u3055\u3044\u3002\n\u5DE6\u53F3\u306E\u30B5\u30E0\u30B9\u30C6\u30A3\u30C3\u30AF\u3092\u5012\u3057\u3066use\u30DC\u30BF\u30F3\u3092\u30AF\u30EA\u30C3\u30AF\u3059\u308B\u3068\u6587\u5B57\u304C\u5165\u529B\u3055\u308C\u307E\u3059\u300212\u30AD\u30FC\u30D5\u30EA\u30C3\u30AF\u5165\u529B\u306B\u30D2\u30F3\u30C8\u3092\u5F97\u3066\u4F5C\u308A\u307E\u3057\u305F\u3002"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9756,9 +9756,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'anatawa12''s VR keyboard test world
+  m_text: 'A test implementation of cleKey - a keyboard for VR -
 
-    https://github.com/anatawa12/KeyboardTester/'
+    https://github.com/anatawa12/clekeyVRC/'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17908,13 +17908,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This is a world to try implement a type of keyboard for VR. I don\u2019t
-    want to implement as OpenVR Overlay at first so I implement as a VRC World.\nThe
+  m_text: "This is a world to try implement a type of keyboard for VR. \nThis is
+    planned to implement as OpenVR Overlay but first, I implement as a VRC World.\nThe
     main purpose of this World is to research UX of this keyboard.\nPlease tweet
-    about this keyboard with #anatawa12KBVRC.\n\nYou can sit with the pole on right.\nThe
-    right side of text is the system log.\nThe front is the area to write.\n\nTilting
-    both thumbstick and resetting either to input a character.\nThis keyboard is
-    inspired by Japanese 12 key keyboard for smartphone."
+    about this keyboard with #clekeyVRC.\n\nThis keyboard uses the thumbsticks so
+    to use this, you need to sit to not move. There's one seat at center. Please
+    click the pole to sit.\n\nTilting both thumbstick and click use button to input
+    char.\nThis keyboard is inspired by Japanese 12 key flick keyboard for smartphone."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
