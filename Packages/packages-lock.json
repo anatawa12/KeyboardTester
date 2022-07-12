@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.github.gorialis.vrchat-udon-qr": {
+      "version": "https://github.com/anatawa12/vrchat-udon-qr.git?path=/Assets/Gorialis/UdonQR",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "bd8f9d18f399f687a2466d3d6b46ddc218c9b361"
+    },
     "com.unity.burst": {
       "version": "1.4.11",
       "depth": 1,
