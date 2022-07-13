@@ -267,40 +267,19 @@ public class Keyboard : UdonSharpBehaviour
         _keyboardTables = tables;
     }
 
-    private void PressChanged(bool left)
-    {
-        Log($"press changed: {(left ? "left" : "right")}");
-        // impossible due to C# version
-        //switch ((left, _leftPressing, _rightPressing))
-        //{
-        //    case (false, false, false):
-        //        break;
-        //}
-    }
-
-    private bool UpdateHand(Vector2 location, ref bool pressing)
+    private void UpdateHand(Vector2 location, ref bool pressing)
     {
         switch (pressing)
         {
             case true:
                 if (location.sqrMagnitude < ActiveMinSqrt)
-                {
                     pressing = false;
-                    return true;
-                }
-
                 break;
             case false:
                 if (IgnoreMaxSqrt < location.sqrMagnitude)
-                {
                     pressing = true;
-                    return true;
-                }
-
                 break;
         }
-
-        return false;
     }
 
     /*    \       /
@@ -342,9 +321,7 @@ public class Keyboard : UdonSharpBehaviour
         if (mainText.text.Length == 0)
             return;
         var cur = mainText.text[mainText.text.Length - 1];
-        var repl = '\0';
 
-        
         if ("あいうえおつやゆよわ".IndexOf(cur) != -1)
             ReplaceLast((char)(cur - 1));
         else if ("ぁぃぅぇぉっゃゅょゎ".IndexOf(cur) != -1)
