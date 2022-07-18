@@ -43,7 +43,7 @@ public class Keyboard : UdonSharpBehaviour
 
     [NonSerialized] public float ActiveMinSqrt = 0.75f * 0.75f;
     [NonSerialized] public float IgnoreMaxSqrt = 0.80f * 0.80f;
-    [NonSerialized] public bool TriggerToInput = true;
+    [NonSerialized] public bool FlickInput = true;
 
     // tan(90/4*1 = 22.5[deg])
     private const float Tan1QuoterRightAngle = 0.41421356237f;
@@ -108,7 +108,7 @@ public class Keyboard : UdonSharpBehaviour
         UpdateHand(leftInput, ref _leftPressing);
         UpdateHand(rightInput, ref _rightPressing);
 
-        if (!TriggerToInput)
+        if (FlickInput)
             if (pressingBoth && (!_leftPressing || !_rightPressing))
             {
                 InputChar(LeftAngle, RightAngle);
@@ -147,7 +147,7 @@ public class Keyboard : UdonSharpBehaviour
 
     public override void InputUse(bool value, UdonInputEventArgs args)
     {
-        if (value && TriggerToInput)
+        if (value && !FlickInput)
             InputChar(LeftAngle, RightAngle);
     }
 
