@@ -10,6 +10,7 @@ public class UIRingController : KeyboardDisplay
     public LeftOrRight hand;
     public RectTransform stick;
 
+    [NonSerialized] public bool KeepRingView;
     [NonSerialized] public int Index = -2;
     private char[] _table;
     private string[] _seventhLine;
@@ -59,7 +60,7 @@ public class UIRingController : KeyboardDisplay
                 break;
         }
 
-        if (sub < 0)
+        if (KeepRingView || sub < 0)
         {
             singleChars.Disable();
             for (var mainI = 0; mainI < 8; mainI++)

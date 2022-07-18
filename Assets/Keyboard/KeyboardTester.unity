@@ -8584,6 +8584,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4693876798430718513, guid: 9468acfb770e845a19449c251decd689,
         type: 3}
+      propertyPath: left
+      value: 
+      objectReference: {fileID: 199915948}
+    - target: {fileID: 4693876798430718513, guid: 9468acfb770e845a19449c251decd689,
+        type: 3}
+      propertyPath: right
+      value: 
+      objectReference: {fileID: 51602334}
+    - target: {fileID: 4693876798430718513, guid: 9468acfb770e845a19449c251decd689,
+        type: 3}
       propertyPath: keyboard
       value: 
       objectReference: {fileID: 1616326689}
