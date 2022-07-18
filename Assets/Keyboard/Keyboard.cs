@@ -56,6 +56,7 @@ public class Keyboard : UdonSharpBehaviour
 
     private bool _leftPressing = false;
     private bool _rightPressing = false;
+    private bool _inputtedViaTrigger = false;
 
     private void Start()
     {
@@ -111,7 +112,9 @@ public class Keyboard : UdonSharpBehaviour
         if (FlickInput)
             if (pressingBoth && (!_leftPressing || !_rightPressing))
             {
-                InputChar(LeftAngle, RightAngle);
+                if (!_inputtedViaTrigger)
+                    InputChar(LeftAngle, RightAngle);
+                _inputtedViaTrigger = false;
             }
 
         var anglesLeftOld = LeftAngle;
@@ -147,8 +150,11 @@ public class Keyboard : UdonSharpBehaviour
 
     public override void InputUse(bool value, UdonInputEventArgs args)
     {
-        if (value && !FlickInput)
+        if (value)
+        {
             InputChar(LeftAngle, RightAngle);
+            _inputtedViaTrigger = true;
+        }
     }
 
     public static Vector2 GetStickPos(LeftOrRight hand)
